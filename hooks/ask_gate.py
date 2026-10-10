@@ -11,17 +11,17 @@ import re
 import sys
 from pathlib import Path
 
-HOME = Path(os.environ.get("I2I_HOME") or Path.home() / ".i2i")
+HOME = Path(os.environ.get("ZHIJI_HOME") or Path.home() / ".zhiji")
 PASS = ("分身没把握", "快问快答", "【I2I】")
 CAP = 9000
 
-GUIDE = """I2I 分身拦截了这次提问。请先按下面的分身档案逐个判断问题：
-- 有把握度为“高”的规则直接覆盖的问题：不要问用户，按规则选择并继续，在最终回复里用一行注明“已按你的习惯选了 X（规则编号）”，用户不认可会自己纠正。
-- 其余问题：再次调用 AskUserQuestion 只问这些问题，每个 question 的开头加“【分身没把握】”。
+GUIDE = “””知己拦截了这次提问。请先按下面的知己档案逐个判断问题：
+- 有把握度为”高”的规则直接覆盖的问题：不要问用户，按规则选择并继续，在最终回复里用一行注明”已按你的习惯选了 X（规则编号）”，用户不认可会自己纠正。
+- 其余问题：再次调用 AskUserQuestion 只问这些问题，每个 question 的开头加”【分身没把握】”。
 - 不要为了绕过拦截而给问题加标记，只有确实没把握的问题才加。
 
-===== 分身档案（~/.i2i/profile.md 节选）=====
-"""
+===== 知己档案（~/.zhiji/profile.md 节选）=====
+“””
 
 
 def excerpt(text):
@@ -36,6 +36,11 @@ def excerpt(text):
     return body if len(body) <= CAP else body[:CAP] + "\n…（已截断）"
 
 
+def has_high_confidence(text):
+    """档案里是否存在至少一条把握度为"高"的规则。没有高把握规则时拦截无意义。"""
+    return bool(re.search(r"把握[：:]\s*高", text))
+
+
 def main():
     try:
         data = json.load(sys.stdin)
@@ -47,7 +52,10 @@ def main():
     profile = HOME / "profile.md"
     if not profile.exists():
         return
-    body = excerpt(profile.read_text(encoding="utf-8", errors="ignore"))
+    text = profile.read_text(encoding="utf-8", errors="ignore")
+    if not has_high_confidence(text):
+        return  # 没有高把握规则，拦截没有意义，直接放行
+    body = excerpt(text)
     if not body:
         return
     sys.stderr.write(GUIDE + body + "\n")

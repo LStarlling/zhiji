@@ -4,7 +4,7 @@
 只维护文件里一对标记之间的区块，标记之外用户手写的内容一律不动。
 
   python export.py targets                     列出本机可能的 memory 文件
-  python export.py write --target <文件>       用 ~/.i2i/export.md 的内容替换（或追加）区块
+  python export.py write --target <文件>       用 ~/.zhiji/export.md 的内容替换（或追加）区块
   python export.py remove --target <文件>      删除区块，其余内容原样保留
 
 export.md 由 agent 根据 profile.md 撰写，只放要导出的规则本身。
@@ -16,8 +16,8 @@ from pathlib import Path
 
 from extract import HOME
 
-START = "<!-- i2i:start 由 I2I 维护，手改会在下次同步时被覆盖；要改请改 ~/.i2i/profile.md -->"
-END = "<!-- i2i:end -->"
+START = "<!-- zhiji:start 由知己维护，手改会在下次同步时被覆盖；要改请改 ~/.zhiji/profile.md -->"
+END = "<!-- zhiji:end -->"
 CANDIDATES = [
     Path(os.environ.get("CLAUDE_CONFIG_DIR", Path.home() / ".claude")) / "CLAUDE.md",
     Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "AGENTS.md",
@@ -40,7 +40,7 @@ def targets():
     for p in CANDIDATES:
         state = "不存在"
         if p.exists():
-            state = "已有 I2I 区块" if START in p.read_text(encoding="utf-8", errors="ignore") else "存在"
+            state = "已有知己区块" if START in p.read_text(encoding="utf-8", errors="ignore") else "存在"
         print("{}\t{}".format(state, p))
 
 
@@ -66,7 +66,7 @@ def remove(target):
     text = target.read_text(encoding="utf-8")
     before, after = split(text)
     if after is None:
-        sys.exit("文件里没有 I2I 区块")
+        sys.exit("文件里没有知己区块")
     target.write_text((before.rstrip() + "\n" + after.lstrip("\n")).strip() + "\n", encoding="utf-8")
     print("已删除区块：", target)
 

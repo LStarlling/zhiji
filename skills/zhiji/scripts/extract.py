@@ -24,7 +24,7 @@ from pathlib import Path
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
 
-HOME = Path(os.environ.get("I2I_HOME") or Path.home() / ".i2i")
+HOME = Path(os.environ.get("ZHIJI_HOME") or Path.home() / ".zhiji")
 CLAUDE_DIR = Path(os.environ.get("CLAUDE_CONFIG_DIR", Path.home() / ".claude"))
 CODEX_DIR = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
 CHUNK = 120

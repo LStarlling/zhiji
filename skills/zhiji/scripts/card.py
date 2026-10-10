@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """生成可分享的分身画像卡片。仅依赖标准库。
 
-  python card.py [card.json]   默认读取 ~/.i2i/card.json，输出 ~/.i2i/card.html
+  python card.py [card.json]   默认读取 ~/.zhiji/card.json，输出 ~/.zhiji/card.html
 
 card.json 由 agent 根据 profile.md 撰写：
 {
@@ -20,7 +20,7 @@ import sys
 
 from extract import HOME
 
-REPO = "github.com/LStarlling/i2i"
+REPO = "github.com/LStarlling/zhiji"
 MIN_QUESTIONS = 10  # 考题少于这个数时分数波动太大，卡片上不显示
 
 
@@ -88,7 +88,7 @@ TEMPLATE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>我的数字分身</title>
+<title>知己</title>
 <style>
 :root {{ --ink:#18191b; --sub:#5b5e64; --line:#d9d9d3; --paper:#f7f7f4; --accent:#e0492a; --bg:#e6e6e0; --hint:#6f7278; }}
 @media (prefers-color-scheme: dark) {{ :root {{ --bg:#141516; --hint:#9a9da3; }} }}
@@ -127,7 +127,7 @@ h1 {{ font-size:46px; line-height:1.15; font-weight:800; margin-top:34px; }}
 </head>
 <body>
 <article class="card" id="card">
-  <header class="top"><span class="brand">I2I <b>数字分身</b></span><span>从 {signals} 条对话里学到 {formal} 条规则</span></header>
+  <header class="top"><span class="brand">知己 <b>数字孪生</b></span><span>从 {signals} 条对话里学到 {formal} 条规则</span></header>
   <h1>{persona}</h1>
   <p class="tag">{tagline}</p>
   <section class="axes">{axes}</section>
@@ -151,7 +151,9 @@ def main():
     c = json.loads(open(src, encoding="utf-8").read())
     out = HOME / "card.html"
     out.write_text(render(c), encoding="utf-8")
-    print(out)
+    # 输出绝对路径，Windows 下 Path 默认就是绝对路径，不依赖 ~ 展开
+    abs_path = str(out.resolve())
+    print(abs_path)
 
 
 if __name__ == "__main__":

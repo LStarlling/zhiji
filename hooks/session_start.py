@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-HOME = Path(os.environ.get("I2I_HOME") or Path.home() / ".i2i")
+HOME = Path(os.environ.get("ZHIJI_HOME") or Path.home() / ".zhiji")
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
         return
     n = sum(1 for f in pending.glob("*.jsonl") for l in open(f, encoding="utf-8", errors="ignore") if l.strip())
     if n:
-        print("I2I：上次会话后新增 {} 条待学习的信号，输入 /i2i 即可让分身学进去。".format(n))
+        print("知己：上次会话后新增 {} 条待学习的信号，输入 /zhiji 即可让知己学进去。".format(n))
 
 
 if __name__ == "__main__":
