@@ -45,7 +45,15 @@
 /plugin install zhiji@zhiji
 ```
 
-**其他支持 SKILL.md 的 agent**（Codex 等）：把 `skills/zhiji` 目录复制到该 agent 的 skills 目录下。
+**其他支持 SKILL.md 的 agent**（Codex、企业 IM 里的 OpenClaw agent 等）：把 `skills/zhiji` 目录放进该 agent 的 skills 目录即可。
+
+如果你的 agent 能自己读写文件（比如企业 IM 里接入的 OpenClaw「小龙虾」），最省事的办法是**把仓库地址发给它，让它自己装**：
+
+```
+把 https://github.com/LStarlling/zhiji.git 装成我的 skill
+```
+
+它会 clone 仓库、把 `skills/zhiji` 放到正确位置。手动安装也可以：
 
 ```
 git clone https://github.com/LStarlling/zhiji.git
@@ -75,7 +83,7 @@ cp -r zhiji/skills/zhiji ~/.codex/skills/   # 以 Codex 为例
 5. 想让回复话术更像你，导入一些你和同事、朋友的聊天，方式见下方"导入聊天记录"。
 6. 生成分享卡片，得到一张你的决策画像，截图即可分享。卡片会自动去掉公司、项目等内部信息。
 7. 同步到 CLAUDE.md（或 AGENTS.md）后，把握度高的规则会写进你的 memory 文件，所有 agent 直接受益，见下方"同步到 memory 文件"。
-8. Claude Code 下装好插件就自动学习（通过插件自带的钩子实现，其他 agent 需要你主动运行 `/zhiji` 更新）：每次会话结束抽取新信号，下次会话开始提醒你一句。AI 要问你选择题时，也会先让知己判断，把握高的直接按你的习惯选，并在回复里注明，你不认可直接说。
+8. **手动触发是默认，钩子是可选的自动化**。任何 agent 里都可以主动运行 `/zhiji` 来学习、校准、更新——完全够用，而且 token 消耗可控，你自己决定"积累够了再学"。Claude Code 下额外提供三个钩子：会话结束静默抽取新信号、下次会话开始提醒一句、AI 提问前先让知己判断（把握高的直接按你习惯选）。其他 agent（OpenClaw 等）钩子不会触发，主动运行 `/zhiji` 效果一样。
 
 ## 同步到 memory 文件
 
