@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""PreToolUse 钩子（AskUserQuestion）：agent 要问用户之前，先让分身判断。
+“””PreToolUse 钩子（AskUserQuestion）：agent 要问用户之前，先让知己判断。
 
-有分身档案时拦下第一次提问，把档案交给 agent：把握高的问题按档案直接选，
-没把握的再问用户，并在问题开头加“【分身没把握】”。带该标记的提问直接放行，
-快问快答的提问（带“快问快答”）和 I2I 自身流程的提问（带“【I2I】”）也放行。仅依赖标准库。
-"""
+有知己档案时拦下第一次提问，把档案交给 agent：把握高的问题按档案直接选，
+没把握的再问用户，并在问题开头加”【分身没把握】”。带该标记的提问直接放行，
+快问快答的提问（带”快问快答”）和知己自身流程的提问（带”【知己】”）也放行。仅依赖标准库。
+“””
 import json
 import os
 import re
@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 HOME = Path(os.environ.get("ZHIJI_HOME") or Path.home() / ".zhiji")
-PASS = ("分身没把握", "快问快答", "【I2I】")
+PASS = ("分身没把握", "快问快答", "【知己】")
 CAP = 9000
 
 GUIDE = “””知己拦截了这次提问。请先按下面的知己档案逐个判断问题：

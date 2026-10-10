@@ -110,8 +110,8 @@ description: 用户的本地数字孪生。从用户与 AI 的历史对话中学
 
 **选择题**：用户在结构化选择题里的真实选择。
 
-1. 运行 `scripts/score.py sample choice`，读取 `~/.i2i/eval/questions.jsonl`。
-2. 每题写一行到 `~/.i2i/eval/predictions.jsonl`：`{"id": "...", "pick": ["选项标签"], "p": 0.72}`。多选题的 pick 写全部选中项；判断用户会给出选项外答案时写 `["其他"]`。
+1. 运行 `scripts/score.py sample choice`，读取 `~/.zhiji/eval/questions.jsonl`。
+2. 每题写一行到 `~/.zhiji/eval/predictions.jsonl`：`{"id": "...", "pick": ["选项标签"], "p": 0.72}`。多选题的 pick 写全部选中项；判断用户会给出选项外答案时写 `["其他"]`。
 3. 运行 `scripts/score.py grade`。
 
 **打回题**：AI 交出一版产出后，用户是接受还是打回。
@@ -238,7 +238,7 @@ Claude Code 下，agent 调用 AskUserQuestion 时会被知己钩子拦下一次
 
 1. 逐个问题判断：有把握度为"高"的规则直接覆盖的，不问，按规则选并继续；在最终回复里用一行注明"已按你的习惯选了 X（规则编号）"。
 2. 其余问题再次调用 AskUserQuestion，只问这些，每个 question 开头加"【分身没把握】"。不要为了绕过拦截给问题加标记。
-3. 快问快答的提问在 question 开头加"【快问快答】"，本 skill 其他流程里的提问（如确认 memory 文件路径、问聊天对象）在开头加"【I2I】"，钩子会直接放行。
+3. 快问快答的提问在 question 开头加"【快问快答】"，本 skill 其他流程里的提问（如确认 memory 文件路径、问聊天对象）在开头加"【知己】"，钩子会直接放行。
 4. 用户在回复里推翻了自动选择，按"六、纠正"记录。
 
 ## 版本
